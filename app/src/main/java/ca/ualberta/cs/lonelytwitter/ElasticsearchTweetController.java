@@ -32,11 +32,11 @@ public class ElasticsearchTweetController {
                 Index index = new Index.Builder(tweet).index("testing").type("tweet").build();
 
                 try {
+                    // where is the client?
                     DocumentResult result = client.execute(index);
-                    if(result.isSucceeded()) {
+                    if(result.isSucceeded()){
                         tweet.setId(result.getId());
-                    }
-                    else {
+                    } else {
                         Log.i("Error", "Elasticsearch was not able to add the tweet");
                     }
                 }
@@ -58,18 +58,18 @@ public class ElasticsearchTweetController {
             ArrayList<NormalTweet> tweets = new ArrayList<NormalTweet>();
 
             // TODO Build the query
-            Search search =  new Search.Builder(search_parameters[0]).addIndex("testing").addType("tweet").build();
+            Search search = new Search.Builder(search_parameters[0])
+                    .addIndex("testing")
+                    .addType("tweet")
+                    .build();
 
             try {
+                // TODO get the results of the query
                 SearchResult result = client.execute(search);
-                if(result.isSucceeded()) {
+                if (result.isSucceeded()){
                     List<NormalTweet> foundTweets = result.getSourceAsObjectList(NormalTweet.class);
                     tweets.addAll(foundTweets);
                 }
-                else {
-                    Log.i("Error","The search query failed");
-                }
-               // TODO get the results of the query
             }
             catch (Exception e) {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
